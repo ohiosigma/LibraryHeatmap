@@ -1,0 +1,10 @@
+Campus building geometry: OpenStreetMap contributors, retrieved 2026-10-24. Licensed under ODbL 1.0: https://www.openstreetmap.org/copyright
+Extract includes 198 mapped building footprints within the mapped SBU university boundary. Coverage is not a guarantee of every current building.
+Melville first-floor map: https://library.stonybrook.edu/music-library/visitor-information/
+Study-space names and amenities: https://library.stonybrook.edu/services/access-services/places-to-study/
+Interactive overlays and student-defined areas added by StudySignal. No live university occupancy feed is connected.
+Leaflet 1.9.4: https://leafletjs.com; BSD-2-Clause.
+
+Additional source maps: SBU Healthier U indoor walking map collection (2014): https://www.stonybrook.edu/commcms/healthieru/resources/maps.php
+Union lobby / second-floor / COLA diagrams: Stony Brook Union Scheduling Guide, July 2021 diagrams.
+Health Sciences shared Level 2 map does not depict the Level 3 library. Library common and silent study area descriptions: https://library.stonybrook.edu/healthsciences/ and https://www.stonybrook.edu/commcms/lib-dean/_pdf/SBU%20Libraries%20Description.pdf
