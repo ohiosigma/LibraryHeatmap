@@ -6,12 +6,12 @@ Live app: https://studysignal-sbu.merrycove14.chatgpt.site (existing access rest
 
 ## Source
 
-- `public/`: browser app and published map/GTFS snapshots.
-- `worker/`: Cloudflare Worker APIs for shared reports/presence and live transit.
-- `drizzle/`: D1 database migration.
+- `public/`: browser app, building-specific study-group page, and published map/GTFS snapshots.
+- `legacy/`: preserved original raffle and study-group prototype; the current app serves its study-group page from `public/study-groups.html`.
+- `worker/`: Cloudflare Worker APIs for shared reports/presence, study groups, and live transit.
+- `drizzle/`: D1 database migrations.
 - `scripts/build.mjs`: embeds public assets and APIs into `dist/server/index.js`.
 - `tests/`: transit decoding, UI wiring, and student-tool checks.
-- `legacy/`: the repository's previous campus study-group prototype, preserved.
 
 ## Build and check
 
@@ -30,7 +30,7 @@ For a static UI preview:
 python3 -m http.server 8080 --directory public
 ```
 
-Static hosting, including GitHub Pages, does not run `/api/state`, `/api/presence`, `/api/report`, or `/api/transit`. Shared activity and live transit need the Worker backend; the root index only redirects to the static UI. Worker deployment needs a D1 binding named `DB` with the migration applied. `.openai/hosting.json` identifies the existing Sites deployment and is not a GitHub deployment workflow.
+Static hosting, including GitHub Pages, does not run `/api/state`, `/api/presence`, `/api/report`, or `/api/transit`. Shared activity, live transit, and cross-device study groups need the Worker backend; static hosting alone stores newly created study groups only in that browser. Worker deployment needs a D1 binding named `DB` and both migrations (`0000_shared_activity.sql` and `0001_study_groups.sql`) applied. `.openai/hosting.json` identifies the existing Sites deployment and is not a GitHub deployment workflow.
 
 ## Data and limitations
 
