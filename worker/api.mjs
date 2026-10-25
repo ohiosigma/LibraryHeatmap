@@ -9,7 +9,8 @@ export async function api(request, env, buildingIds) {
 
   if (request.method === 'GET' && url.pathname === '/api/state') {
     const [presence, reports] = await Promise.all([
-      env.DB.prepare('SELECT building,area,COUNT(*) AS count FROM presence WHERE updated > ? GROUP BY building,area').bind(now - 180000).all(),
+      env.DB.prepare("SELECT building,area,mode,COUNT(*) AS count FROM presence WHERE (mode = 'automatic' AND updated > ?) OR (mode != 'automatic' AND updated > ?) GROUP BY building,area,mode")
+        .bind(now - 1800000, now - 180000).all(),
       env.DB.prepare('SELECT building,area,status,noise,updated FROM (SELECT *,ROW_NUMBER() OVER(PARTITION BY building,area ORDER BY updated DESC) AS rank FROM reports WHERE updated > ?) WHERE rank=1').bind(now - 1800000).all()
     ]);
     return json({ presence: presence.results, reports: reports.results, serverTime: now });
@@ -74,12 +75,13 @@ export async function api(request, env, buildingIds) {
 
   if (!buildingIds.has(body.building) || typeof body.area !== 'string' || !/^[a-zA-Z0-9_-]{0,80}$/.test(body.area)) return json({ error: 'Invalid building or area' }, 400);
   if (url.pathname === '/api/presence') {
-    if (!['manual', 'location'].includes(body.mode)) return json({ error: 'Invalid mode' }, 400);
+    if (!['manual', 'location', 'automatic'].includes(body.mode)) return json({ error: 'Invalid mode' }, 400);
     await env.DB.batch([
-      env.DB.prepare('DELETE FROM presence WHERE updated < ?').bind(now - 180000),
+      env.DB.prepare("DELETE FROM presence WHERE (mode = 'automatic' AND updated < ?) OR (mode != 'automatic' AND updated < ?)")
+        .bind(now - 1800000, now - 180000),
       env.DB.prepare('INSERT INTO presence(session,building,area,mode,updated) VALUES(?,?,?,?,?) ON CONFLICT(session) DO UPDATE SET building=excluded.building,area=excluded.area,mode=excluded.mode,updated=excluded.updated').bind(session, body.building, body.area, body.mode, now)
     ]);
-    return json({ ok: true, expiresIn: 180 }, 200, headers);
+    return json({ ok: true, expiresIn: body.mode === 'automatic' ? 1800 : 180 }, 200, headers);
   }
   if (url.pathname === '/api/report') {
     if (!['open', 'filling', 'full'].includes(body.status) || !['', 'Quiet', 'Some conversation', 'Loud'].includes(body.noise || '')) return json({ error: 'Invalid conditions' }, 400);

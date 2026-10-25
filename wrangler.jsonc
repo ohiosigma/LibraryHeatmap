@@ -1,0 +1,15 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "studysignal-demo",
+  "main": "dist/server/index.js",
+  "compatibility_date": "2026-10-24",
+  "workers_dev": true,
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "studysignal-demo",
+      "database_id": "ae6805ea-4a78-4828-92e2-858029a8823f",
+      "migrations_dir": "drizzle"
+    }
+  ]
+}
