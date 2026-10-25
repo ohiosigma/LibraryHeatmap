@@ -1,5 +1,6 @@
 (() => {
   let current = null, counts = [], connected = false, autoEnabled = false, autoBusy = false;
+  window.studyPresenceConnected = () => connected;
   const AUTO_KEY = 'ss-auto-location-v1';
   const LOCAL_KEY = 'ss-local-presence-v1';
   const status = document.querySelector('#sharingStatus');
@@ -61,7 +62,7 @@
     const message = window.simEnabled
       ? window.simBuildingCount(building) + ' simulated check-ins · Sample activity, not live users.'
       : !connected
-        ? 'Presence service unavailable'
+        ? location.hostname==='127.0.0.1'?'Live check-ins aren’t available in this preview.':'Live check-ins are temporarily unavailable.'
         : automatic
           ? automatic + ' opted-in location session' + (automatic === 1 ? '' : 's') + ' pinged this building in the last 30 minutes · Not a headcount.'
           : total
@@ -71,7 +72,9 @@
     paragraph.id = 'presenceCount';
     paragraph.className = 'unknown-note';
     paragraph.textContent = message;
-    document.querySelector('#buildingPanel h2')?.after(paragraph);
+    const activity = document.querySelector('#buildingPanel [data-panel-section="activity"]');
+    if (activity) activity.append(paragraph);
+    else document.querySelector('#buildingPanel h2')?.after(paragraph);
   }
 
   async function heartbeat() {
