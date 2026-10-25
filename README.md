@@ -23,6 +23,9 @@ node tests/transit.mjs
 node tests/transit-ui.cjs
 node tests/student-tools.cjs
 node tests/reporting.cjs
+node tests/preferences.cjs
+node tests/favorites.cjs
+node tests/favorite-summary.cjs
 node tests/api.mjs
 node tests/pwa.mjs
 node tests/laundry.mjs
@@ -63,3 +66,13 @@ StudySignal focuses on finding a study space and getting there. The former campu
 ## Visual theme
 
 The interface uses Stony Brook Red (`#990000`), black, and white with neutral gray surfaces, based on [SBU color guidelines](https://www.stonybrook.edu/sbu-brand/design-visual-identity/colors). `public/brand.css` contains the shared theme. Availability indicators and transit line colors retain their data meanings. StudySignal remains an independent student app.
+
+## Study preference filters
+
+Quiet, Group study, and Outlets preferences are shared between the campus map, building-area cards, library filters, and walking finder. They persist in this browser. Matching requires explicitly listed amenities; missing information is not a match. Buildings without matching listed areas are dimmed and excluded from search results. Clear resets the preferences. Area cards distinguish reported seat conditions from listed amenities and show report freshness; they do not imply live seat counts.
+
+## Spaces / favorite buildings
+
+The pin-icon Spaces tab lists favorite buildings. Use the heart in each building’s sticky header to add or remove it; use View building in Spaces to reopen its map details. Favorites persist locally under `ss-favorite-buildings` and update between tabs. They do not require account access or confirmed occupancy, and preference filters do not hide saved buildings. Existing `ss-saved` indoor-zone records are preserved separately.
+
+Spaces cards include reported-open area counts, 30-minute report coverage and freshness, listed amenity counts, a few area statuses, and recent participating app sessions. They update with shared-state refreshes and distinguish an unavailable service from zero check-ins. Check-ins never imply measured seat availability; full building details remain optional.
