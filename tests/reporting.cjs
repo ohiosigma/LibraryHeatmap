@@ -3,8 +3,8 @@ const elements=new Map(),stored=new Map();
 function $(selector){if(!elements.has(selector))elements.set(selector,{value:'',innerHTML:'',textContent:'',dataset:{},style:{},classList:{add(){},remove(){},toggle(){}},setAttribute(){},scrollIntoView(){},showModal(){this.open=true},close(){this.open=false},reset(){}});return elements.get(selector)}
 class FormData {get(name){return name==='status'?'open':null}}
 let publish=async()=>false;
-const context={document:{querySelector:$,querySelectorAll:()=>[]},window:{addEventListener(){},publishLibraryReport:(...args)=>publish(...args)},localStorage:{getItem:k=>stored.get(k)||null,setItem:(k,v)=>stored.set(k,v)},location:{href:'https://studysignal.test/'},history:{replaceState(){}},URL,URLSearchParams,FormData,Date,console,setInterval(){},setTimeout(){},clearTimeout(){}};
-vm.createContext(context);vm.runInContext(fs.readFileSync('public/app.js','utf8'),context);
+const context={document:{querySelector:$,querySelectorAll:()=>[],addEventListener(){}},window:{addEventListener(){},publishLibraryReport:(...args)=>publish(...args)},localStorage:{getItem:k=>stored.get(k)||null,setItem:(k,v)=>stored.set(k,v)},location:{href:'https://studysignal.test/'},history:{replaceState(){}},URL,URLSearchParams,FormData,Date,console,setInterval(){},setTimeout(){},clearTimeout(){}};
+vm.createContext(context);vm.runInContext(fs.readFileSync('public/preferences.js','utf8'),context);vm.runInContext(fs.readFileSync('public/app.js','utf8'),context);
 const button={disabled:false},form=$('#reportForm');form.querySelector=()=>button;
 const submit=()=>form.onsubmit({preventDefault(){},target:form});
 (async()=>{
